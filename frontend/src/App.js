@@ -15,7 +15,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React Yoo
+          Learn React rfROD
         </a>
       </header>
     </div>
