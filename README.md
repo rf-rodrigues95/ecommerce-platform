@@ -7,17 +7,12 @@
 ### 🔹 Frontend
 - **React.js**
 - **Tailwind CSS**
-- **React Router DOM**
-- **ESLint** + **Prettier**
 
 ---
 
 ### 🔹 Backend
-- **Java 17**
-- **Spring Boot 3**
-- **Spring Web (REST API)**
-- **Spring Data JPA**
-- **Lombok**
+- **Java 17 + Spring Boot**
+- **Spring Web (REST API) + Spring Data JPA**
 
 ---
 
