@@ -1,6 +1,10 @@
 # STILL IN EARLY STAGES STARTED AT 08/2025
-
-# INSTALLING JWT SECURITY..
+# ToDo / Done List
+- Tables / Repositories(done)
+- JWT (done)
+- STRIPE (ToDo)
+- Controllers and Services (ToDo)
+- AWS S3 Bucket (ToDo)
 
 ## 💻 FULL STACK
 
