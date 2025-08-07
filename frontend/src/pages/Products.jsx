@@ -4,40 +4,46 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const PRODUCTS_ENDPOINT = `${API_BASE_URL}/product`;
 
 const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJlY29tbWVyY2UtYXBpIiwic3ViIjoicGxhbmV0YXJ5eSIsImV4cCI6MTc1NDUzMTQ0NX0.sYdoh3ucoyQh99taoYrwnCZITriDHVIeyvT6RPYamq4";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJlY29tbWVyY2UtYXBpIiwic3ViIjoicGxhbmV0YXJ5eSIsImV4cCI6MTc1NDUzOTE0Mn0.Br4kaU7OZXB_7jLxGMNN23wRUqG_Jh0cmJxRlI9LacI";
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(PRODUCTS_ENDPOINT, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          console.log(response);
-          throw new Error("Failed to fetch products");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setProducts(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
-  }, []);
+    const fetchAllProducts = async () => {
+      try {
+        const response = await fetch(PRODUCTS_ENDPOINT, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-  if (loading) return <p>Loading products...</p>;
-  if (error) return <p>Error: {error}</p>;
+        if (!response.ok) {
+          throw new Error(`HTTP Error: Status ${response.status}`);
+        }
+
+        const data = await response.json();
+        setProducts(data ?? []);
+        setError(null);
+      } catch (err) {
+        setError(err.message || "Unknown error");
+        setProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAllProducts();
+  }, []);
 
   return (
     <div style={{ padding: "1rem" }}>
+    {loading && <p>Loading products...</p>}
+    {error && <p style={{ color: "red" }}>Error: {error}</p>}
+    
+    {!loading && !error && (
     <table
       style={{
         width: "100%",
@@ -72,6 +78,7 @@ export default function Products() {
         )}
       </tbody>
     </table>
+    )}
   </div>
   );
 }
