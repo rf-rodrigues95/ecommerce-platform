@@ -1,18 +1,12 @@
 package com.rfrod.ecommerce.controller;
 
 import static com.rfrod.ecommerce.utils.Result.errorOrValue;
-import static com.rfrod.ecommerce.utils.Result.ErrorCode.BAD_REQUEST;
-import static com.rfrod.ecommerce.utils.Result.ErrorCode.CONFLICT;
-import static com.rfrod.ecommerce.utils.Result.ErrorCode.FORBIDDEN;
-import static com.rfrod.ecommerce.utils.Result.ErrorCode.INTERNAL_ERROR;
-import static com.rfrod.ecommerce.utils.Result.ErrorCode.NOT_FOUND;
-import static com.rfrod.ecommerce.utils.Result.ErrorCode.NOT_IMPLEMENTED;
+import static com.rfrod.ecommerce.utils.Result.toResponseEntity;
 
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,11 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rfrod.ecommerce.domain.product.Product;
 import com.rfrod.ecommerce.domain.product.ProductRequestDTO;
 import com.rfrod.ecommerce.domain.product.ProductResponseDTO;
 import com.rfrod.ecommerce.service.ProductsService;
-import com.rfrod.ecommerce.utils.Result;
 
 @RestController
 @RequestMapping("product")
@@ -64,21 +56,4 @@ public class ProductController {
             .getProducts().stream().map(ProductResponseDTO::new).toList());
     }
 
-    private <T> ResponseEntity<T> toResponseEntity(Result<T> result) {
-        if (result.isOK()) {
-            if (result.value() == null)
-                return ResponseEntity.noContent().build();
-            return ResponseEntity.ok(result.value());
-        }
-
-        return switch (result.error()) {
-            case NOT_FOUND -> ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            case CONFLICT -> ResponseEntity.status(HttpStatus.CONFLICT).build();
-            case FORBIDDEN -> ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            case BAD_REQUEST -> ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-            case INTERNAL_ERROR -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-            case NOT_IMPLEMENTED -> ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
-            default -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        };
-    }
 }

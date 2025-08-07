@@ -2,6 +2,9 @@ package com.rfrod.ecommerce.utils;
 
 import java.util.function.Function;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 public interface Result<T> {
     enum ErrorCode{
         OK, CONFLICT, NOT_FOUND, BAD_REQUEST, FORBIDDEN, INTERNAL_ERROR, NOT_IMPLEMENTED, TIMEOUT
@@ -73,6 +76,23 @@ public interface Result<T> {
 			return error( a.error() );
 	}
 
+	static <T> ResponseEntity<T> toResponseEntity(Result<T> result) {
+        if (result.isOK()) {
+            if (result.value() == null)
+                return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(result.value());
+        }
+
+        return switch (result.error()) {
+            case NOT_FOUND -> ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            case CONFLICT -> ResponseEntity.status(HttpStatus.CONFLICT).build();
+            case FORBIDDEN -> ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            case BAD_REQUEST -> ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            case INTERNAL_ERROR -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            case NOT_IMPLEMENTED -> ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+            default -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        };
+    }
     /*
  * 
  */
