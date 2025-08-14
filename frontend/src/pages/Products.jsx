@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -11,7 +11,8 @@ export default function Products() {
 
   const { token } = useAuth();
 
-  const response = async (endpoint, method) => {
+    useEffect(() => {
+    const fetchProducts = async (endpoint, method) => {
       try {
         const response = await fetch(endpoint, {
           method: method,
@@ -35,9 +36,8 @@ export default function Products() {
       }
     };
 
-  useEffect(() => {
-    response(PRODUCTS_ENDPOINT, "GET");
-  }, []);
+    fetchProducts(PRODUCTS_ENDPOINT, "GET");
+  }, [token]);
 
   return (
     <div style={{ padding: "1rem" }}>
