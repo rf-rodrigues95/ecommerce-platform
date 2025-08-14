@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useEffect } from "react";
 
 export default function Login() {
   const { login } = useAuth();
@@ -10,6 +11,14 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  
+  const { token } = useAuth();
+  
+  useEffect(() => {
+    if (token) {
+      navigate("/home");
+    }
+  }, [token, navigate]);
 
   const handleLogin = async (e) => {
     const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/login`, {
