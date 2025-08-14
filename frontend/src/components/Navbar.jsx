@@ -36,7 +36,7 @@ export default function Navbar() {
             to="/login"
             className="no-underline text-gray-800 hover:text-blue-600 transition-colors"
           >
-            Login / Signup
+            Logout(not implemented)
           </Link>
         </div>
       </div>
