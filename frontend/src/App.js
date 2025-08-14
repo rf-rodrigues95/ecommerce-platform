@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
@@ -9,22 +9,48 @@ import OrderHistory from './pages/OrderHistory';
 import Login from './pages/Login';
 
 import './App.css';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import PrivateRoute from './components/PrivateRoute';
+
+function AppRoutes() {
+  const { token } = useAuth();
+
+  return (
+    <Routes>
+      <Route path="/" element={token ? <Navigate to="/home" /> : <Navigate to="/login" />} />
+      <Route path="/login" element={<Login />} />
+
+      <Route path="/products" element={<PrivateRoute><Products /></PrivateRoute>} />
+      <Route path="/products/:productId" element={<PrivateRoute><ProductDetails /></PrivateRoute>} />
+      <Route path="/cart" element={<PrivateRoute><Cart /></PrivateRoute>} />
+      <Route path="/orders" element={<PrivateRoute><OrderHistory /></PrivateRoute>} />
+      <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
+
+      <Route path="*" element={<Navigate to="/" />} />
+    </Routes>
+  );
+}
+
+function Layout() {
+  const { token } = useAuth();
+
+  return (
+    <>
+      {token && <Navbar />} {/* Show only if logged in */}
+      <main>
+        <AppRoutes />
+      </main>
+    </>
+  );
+}
 
 function App() {
   return (
-    <Router>
-      <Navbar />
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/products/:productId" element={<ProductDetails />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/orders" element={<OrderHistory />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </main>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Layout />
+      </Router>
+    </AuthProvider>
   );
 }
 

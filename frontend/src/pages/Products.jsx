@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const PRODUCTS_ENDPOINT = `${API_BASE_URL}/product`;
 
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJlY29tbWVyY2UtYXBpIiwic3ViIjoicGxhbmV0YXJ5eSIsImV4cCI6MTc1NDUzOTE0Mn0.Br4kaU7OZXB_7jLxGMNN23wRUqG_Jh0cmJxRlI9LacI";
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchAllProducts = async () => {
+  const { token } = useAuth();
+
+  const response = async (endpoint, method) => {
       try {
-        const response = await fetch(PRODUCTS_ENDPOINT, {
-          method: "GET",
+        const response = await fetch(endpoint, {
+          method: method,
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -35,7 +35,8 @@ export default function Products() {
       }
     };
 
-    fetchAllProducts();
+  useEffect(() => {
+    response(PRODUCTS_ENDPOINT, "GET");
   }, []);
 
   return (

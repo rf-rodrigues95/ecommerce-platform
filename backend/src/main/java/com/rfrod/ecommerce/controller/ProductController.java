@@ -40,7 +40,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}") 
-    public ResponseEntity<Void> deleteProduct(@PathVariable UUID id){
+    public ResponseEntity<Void> deleteProduct(@PathVariable UUID id) {
         return toResponseEntity(this.productsService.deleteProduct(id));
     }
 
