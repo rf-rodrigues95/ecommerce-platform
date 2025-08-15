@@ -1,3 +1,5 @@
+# (This project is still far from complete)
+
 This is a modern e-commerce frontend built with **React**, **TypeScript**, and **Next.js 15**, using the **App Router** for server and client components.
 
 ## Stack
