@@ -1,8 +1,10 @@
+import { redirect } from "next/navigation";
 import ProductsTable from "../../components/ProductsTable";
 import { cookies } from "next/headers";
 
 export default async function ProductsPage() {
   const token = (await cookies()).get("token")?.value;
+  if (!token) redirect("/login");
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/product`, 
     { 
