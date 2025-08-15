@@ -1,5 +1,22 @@
 This is a modern e-commerce frontend built with **React**, **TypeScript**, and **Next.js 15**, using the **App Router** for server and client components.
 
+## Stack
+
+- **React** – for building reusable UI components
+- **Next.js 15 (App Router)** – for server-side rendering, routing, and API integration
+- **TypeScript** – for type safety and better developer experience
+- **Tailwind CSS** – for styling with utility-first CSS
+- **Context API** – for managing authentication state
+- **npm** – for package management and scripts
+
+## Features
+
+- Authentication with server-side redirects and client-side token handling
+- Responsive Navbar with conditional rendering based on authentication
+- Product listing and cart management
+- Dark mode support using CSS `prefers-color-scheme`
+- TODO... (ADD)
+
 ## Getting Started
 
 First, run the development server:
