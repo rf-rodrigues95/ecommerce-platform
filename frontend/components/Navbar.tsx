@@ -8,8 +8,13 @@ export default function Navbar({ token }: { token: string }) {
   const { logout } = useAuth();
   if (!token) return null;
   
-  const handleLogout = () => {
+  /* const handleLogout = () => {
     logout();
+    redirect("/login");
+  } */
+
+  const handleLogout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
     redirect("/login");
   }
 

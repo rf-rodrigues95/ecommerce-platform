@@ -9,6 +9,8 @@ export default function ProductsTable({ products: initialProducts }: { products:
   const [products, setProducts] = useState(initialProducts);
   const { token } = useAuth();
 
+  console.log(document.cookie);
+
   const deleteProduct = async (id: number) => {
     await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/product/${id}`, {
       method: "DELETE",

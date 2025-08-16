@@ -2,37 +2,42 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../../context/AuthContext"; 
 
-interface Props {
-  loginAction: (username: string, password: string, isRegister:boolean) => Promise<string>;
-}
-
-export default function LoginForm({ loginAction }: Props) {
-  const { login } = useAuth();
+export default function LoginForm() {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [isRegister, setIsRegister] = useState(false);
-
-  const onSubmit = async (e: React.FormEvent) => {
+  
+  const onSubmitLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-        const result = await loginAction(username, password, isRegister);
-        if (!isRegister) {
-            login(result);
-            router.push("/home");
-        } else {
-            alert("Registration successful! Please login.");
-            setIsRegister(false);
-        }
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ login: username, password }),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (res.ok) router.push("/home"); // redirect after login
+      else setError("Invalid username or password");
     } catch (err) {
-        if (err instanceof Error) {
-            setError(err.message);
-        } else {
-            setError("An unknown error occurred");
-        }
+      setError(err instanceof Error ? err.message : "An unknown error occurred");
+    }
+  };
+
+
+  const onSubmitRegister = async () => {
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        body: JSON.stringify({ login: username, password, role: "USER" }),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (res.ok) alert("Registration successful! Please login.");
+      else setError("Error on reg");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An unknown error occurred");
     }
   };
 
@@ -41,7 +46,7 @@ export default function LoginForm({ loginAction }: Props) {
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
 
       <form
-        onSubmit={onSubmit}
+        onSubmit={onSubmitLogin}
         className="relative z-10 bg-white/20 backdrop-blur-md border border-white/20 rounded-2xl shadow-xl w-[400px] h-[350px] flex flex-col justify-center items-center gap-4"
       >
         <div className="flex flex-col gap-3 w-[380px] h-[200px]">
@@ -65,7 +70,6 @@ export default function LoginForm({ loginAction }: Props) {
 
           <button
             type="submit"
-            onClick={() => setIsRegister(false)}
             className="w-[380px] h-[45px] bg-blue-600 text-white py-2 rounded hover:bg-blue-500 transition-colors cursor-pointer"
           >
             Iniciar Sessão
@@ -78,8 +82,8 @@ export default function LoginForm({ loginAction }: Props) {
 
         <div className="flex flex-col gap-4 h-[70px]">
           <button
-            type="submit"
-            onClick={() => setIsRegister(true)}
+            type="button"
+            onClick={onSubmitRegister}
             className="w-[170px] h-[40px] bg-green-500 text-white py-2 rounded hover:bg-green-600 transition-colors cursor-pointer"
           >
             Criar Nova Conta
