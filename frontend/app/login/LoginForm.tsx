@@ -37,31 +37,29 @@ export default function LoginForm({ loginAction }: Props) {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-purple-900 via-pink-700 to-indigo-800">
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+
       <form
         onSubmit={onSubmit}
-        className="bg-white rounded-2xl shadow-xl w-[400px] h-[350px] flex flex-col justify-center items-center gap-4"
+        className="relative z-10 bg-white/20 backdrop-blur-md border border-white/20 rounded-2xl shadow-xl w-[400px] h-[350px] flex flex-col justify-center items-center gap-4"
       >
-        
-
-        <div className="flex flex-col gap-2 w-[380px] h-[200px]">
+        <div className="flex flex-col gap-3 w-[380px] h-[200px]">
           <label className="flex flex-col">
-            <span className="text-gray-700 text-sm" >Username</span>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="border border-gray-300 h-[40px] rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border border-gray-300 h-[40px] text-white rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </label>
 
           <label className="flex flex-col">
-            <span className="text-gray-700 text-sm">Password</span>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="border border-gray-300 h-[40px] rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border border-gray-300 h-[40px] text-white rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </label>
 
