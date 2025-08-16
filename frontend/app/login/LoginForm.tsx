@@ -38,21 +38,60 @@ export default function LoginForm({ loginAction }: Props) {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <form onSubmit={onSubmit} className="bg-white p-8 rounded shadow-md w-full max-w-md flex flex-col gap-4">
-        {error && <p className="text-red-500 text-center">{error}</p>}
-        <label>
-          Username
-          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="input" />
-        </label>
-        <label>
-          Password
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="input" />
-        </label>
-        <div className="flex gap-2">
-          <button type="submit" onClick={() => setIsRegister(false)} className="btn-blue">Login</button>
-          <button type="submit" onClick={() => setIsRegister(true)} className="btn-green">Register</button>
+      <form
+        onSubmit={onSubmit}
+        className="bg-white rounded-2xl shadow-xl w-[400px] h-[350px] flex flex-col justify-center items-center gap-4"
+      >
+        
+
+        <div className="flex flex-col gap-2 w-[380px] h-[200px]">
+          <label className="flex flex-col">
+            <span className="text-gray-700 text-sm" >Username</span>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="border border-gray-300 h-[40px] rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </label>
+
+          <label className="flex flex-col">
+            <span className="text-gray-700 text-sm">Password</span>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="border border-gray-300 h-[40px] rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </label>
+
+          <button
+            type="submit"
+            onClick={() => setIsRegister(false)}
+            className="w-[380px] h-[45px] bg-blue-600 text-white py-2 rounded hover:bg-blue-500 transition-colors cursor-pointer"
+          >
+            Iniciar Sessão
+          </button>
         </div>
+
+        <div className="flex items-center gap-2 my-4 w-[380px]">
+          <hr className="flex-1 border-gray-300" />
+        </div>
+
+        <div className="flex flex-col gap-4 h-[70px]">
+          <button
+            type="submit"
+            onClick={() => setIsRegister(true)}
+            className="w-[170px] h-[40px] bg-green-500 text-white py-2 rounded hover:bg-green-600 transition-colors cursor-pointer"
+          >
+            Criar Nova Conta
+          </button>
+        </div>
+
+        {error && <p className="text-red-500 text-center">{error}</p>}
       </form>
     </div>
   );
+
+
 }
