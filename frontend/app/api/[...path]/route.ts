@@ -1,16 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-export async function GET(req: NextRequest, { params }: { params: { path: string[] } }) {
+export async function handler(req: NextRequest, { params }: { params: { path: string[] } }) {
   return proxyRequest(req, params);
 }
 
-export async function POST(req: NextRequest, { params }: { params: { path: string[] } }) {
-  return proxyRequest(req, params);
-}
+export { handler as GET, handler as POST, handler as DELETE, handler as PUT, handler as PATCH };
 
 async function proxyRequest(req: NextRequest, params: { path: string[] } | Promise<{ path: string[]}>) {
   const { path } = await params;
+
+  if (path[0] === "auth" && path[1] === "status") {
+    const token = (await cookies()).get("token")?.value;
+    return new NextResponse(
+      JSON.stringify({ authenticated: !!token }),
+      { status: 200 }
+    );
+  }
+
   if (path[0] === "auth" && path[1] === "logout") {
     const response = new NextResponse(JSON.stringify({ success: true }), { status: 200 });
     response.cookies.set("token", "", {
@@ -25,7 +32,6 @@ async function proxyRequest(req: NextRequest, params: { path: string[] } | Promi
   }
 
   const targetUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/${path.join("/")}${req.nextUrl.search}`;
-
   const token = (await cookies()).get("token")?.value;  
 
   const res = await fetch(targetUrl, {
@@ -34,7 +40,7 @@ async function proxyRequest(req: NextRequest, params: { path: string[] } | Promi
       "Content-Type": req.headers.get("content-type") || "",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
-    body: ["GET", "HEAD"].includes(req.method) ? undefined : await req.text(),
+    body: ["GET", "HEAD", "DELETE"].includes(req.method) ? undefined : await req.text(),
     credentials: "include",
   });
 
@@ -54,8 +60,7 @@ async function proxyRequest(req: NextRequest, params: { path: string[] } | Promi
         
         return response;
     } catch {
-      console.log("failed");
-      return ;
+        return new NextResponse(JSON.stringify({ error: "Login failed" }), { status: 500 });
     }
   }
 

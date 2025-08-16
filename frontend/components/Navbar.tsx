@@ -6,17 +6,17 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function Navbar() {
-  const { token, setToken } = useAuth();
+  const { authenticated, setAuthenticated } = useAuth();
   const router = useRouter();
   
-  if (!token) return null;
+  if (!authenticated) return null;
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { 
       method: "POST",
      });
     router.push("/login");
-    setToken(null);
+    setAuthenticated(false);
   }
 
   return (

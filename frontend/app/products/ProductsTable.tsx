@@ -1,22 +1,39 @@
 "use client";
 
-import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useEffect, useState } from "react";
+import { Product } from "./actions";
 
-type Product = { id: number; name: string; price: number; stock: number };
+interface Actions {
+  getProducts: () => Promise<Product[]>;
+  deleteProduct: (id: number) => Promise<void>;
+}
 
-export default function ProductsTable({ products: initialProducts }: { products: Product[] }) {
-  const [products, setProducts] = useState(initialProducts);
-  const { token } = useAuth();
+interface Props {
+  actions: Actions;
+}
 
-  console.log(document.cookie);
+export default function ProductsTable({actions}: Props) {
+  const [products, setProducts] = useState<Product[]>([]);
 
-  const deleteProduct = async (id: number) => {
-    await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/product/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    setProducts(products.filter((p) => p.id !== id));
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const products = await actions.getProducts();
+        setProducts(products);
+      } catch (err) {
+        console.error("Failed to fetch products", err);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  const handleDelete = async (id: number) => {
+    try {
+      await actions.deleteProduct(id);
+      setProducts(products.filter((p) => p.id !== id));
+    } catch (err) {
+      console.error("Failed to delete product", err);
+    }
   };
 
   return (
@@ -41,7 +58,7 @@ export default function ProductsTable({ products: initialProducts }: { products:
             <td style={{ padding: "1rem", textAlign: "right" }}>€{p.price.toFixed(2)}</td>
             <td style={{ padding: "1rem", textAlign: "right" }}>{p.stock}</td>
             <td style={{ padding: "1rem", textAlign: "center" }}>
-              <button onClick={() => deleteProduct(p.id)}>Delete</button>
+              <button onClick={() => handleDelete(p.id)}>Delete</button>
             </td>
           </tr>
         ))}

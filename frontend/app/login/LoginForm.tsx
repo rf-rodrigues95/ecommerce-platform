@@ -6,7 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 
 
 export default function LoginForm() {
-  const { setToken } = useAuth();
+  const { setAuthenticated } = useAuth();
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -22,7 +22,7 @@ export default function LoginForm() {
       });
 
       if (res.ok) {
-        setToken("authenticated");
+        setAuthenticated(true);
         router.push("/home"); // redirect after login
       } else setError("Invalid username or password");
     } catch (err) {

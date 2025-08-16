@@ -1,23 +1,13 @@
-import { redirect } from "next/navigation";
-import ProductsTable from "../../components/ProductsTable";
-import { cookies } from "next/headers";
+import { deleteProduct, getProducts } from "./actions";
+import ProductsTable from "./ProductsTable";
+
 
 export default async function ProductsPage() {
-  const token = (await cookies()).get("token")?.value;
-  if (!token) redirect("/login");
-
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/product`, 
-    { 
-      method: "GET",
-      cache: "no-store",
-      headers: {Authorization: `Bearer ${token}`}
-     });
-  if (!res.ok) throw new Error("Failed to fetch products");
-  const products = await res.json();
-
+  const actions = { getProducts, deleteProduct };
+  
   return (
     <div className="p-4">
-      <ProductsTable products={products} />
+      <ProductsTable actions={actions} />
     </div>
   );
 }
