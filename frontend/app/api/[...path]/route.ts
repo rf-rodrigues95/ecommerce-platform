@@ -11,6 +11,19 @@ export async function POST(req: NextRequest, { params }: { params: { path: strin
 
 async function proxyRequest(req: NextRequest, params: { path: string[] } | Promise<{ path: string[]}>) {
   const { path } = await params;
+  if (path[0] === "auth" && path[1] === "logout") {
+    const response = new NextResponse(JSON.stringify({ success: true }), { status: 200 });
+    response.cookies.set("token", "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 0,
+    });
+    
+    return response;
+  }
+
   const targetUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/${path.join("/")}${req.nextUrl.search}`;
 
   const token = (await cookies()).get("token")?.value;  
@@ -26,7 +39,6 @@ async function proxyRequest(req: NextRequest, params: { path: string[] } | Promi
   });
 
   //BACKEND RESPONSE
-  const cloned = res.clone();
   if (path[0] === "auth" && path[1] === "login" && res.ok) {
     try {
         const json = await res.json();
@@ -43,15 +55,10 @@ async function proxyRequest(req: NextRequest, params: { path: string[] } | Promi
         return response;
     } catch {
       console.log("failed");
+      return ;
     }
   }
 
-  if (path[0] === "auth" && path[1] === "logout" && res.ok) {
-    const data = await res.text();
-    const cookieStore = await cookies();
-    cookieStore.set("token", "", { maxAge: 0, path: "/" });
-    return new NextResponse(data, { status: res.status });
-  }
-
-  return new NextResponse(cloned.body, { status: res.status });
+  const buffer = await res.arrayBuffer();
+  return new NextResponse(buffer, { status: res.status });
 }

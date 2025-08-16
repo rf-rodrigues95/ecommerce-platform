@@ -2,8 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+
 
 export default function LoginForm() {
+  const { setToken } = useAuth();
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -18,8 +21,10 @@ export default function LoginForm() {
         headers: { "Content-Type": "application/json" },
       });
 
-      if (res.ok) router.push("/home"); // redirect after login
-      else setError("Invalid username or password");
+      if (res.ok) {
+        setToken("authenticated");
+        router.push("/home"); // redirect after login
+      } else setError("Invalid username or password");
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unknown error occurred");
     }

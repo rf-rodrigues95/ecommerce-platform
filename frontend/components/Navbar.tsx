@@ -2,20 +2,21 @@
 
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
-export default function Navbar({ token }: { token: string }) {
-  const { logout } = useAuth();
-  if (!token) return null;
+import { useRouter } from "next/navigation";
+
+export default function Navbar() {
+  const { token, setToken } = useAuth();
+  const router = useRouter();
   
-  /* const handleLogout = () => {
-    logout();
-    redirect("/login");
-  } */
+  if (!token) return null;
 
   const handleLogout = async () => {
-    await fetch("/api/auth/logout", { method: "POST" });
-    redirect("/login");
+    await fetch("/api/auth/logout", { 
+      method: "POST",
+     });
+    router.push("/login");
+    setToken(null);
   }
 
   return (
