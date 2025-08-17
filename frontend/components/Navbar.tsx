@@ -12,7 +12,7 @@ export default function Navbar() {
   if (!authenticated) return null;
 
   const handleLogout = async () => {
-    await fetch("/api/auth/logout", { 
+    await fetch("auth/logout", { 
       method: "POST",
      });
     router.push("/login");

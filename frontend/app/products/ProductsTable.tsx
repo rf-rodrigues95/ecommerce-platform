@@ -1,13 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Product } from "./actions";
+
+export type Product = {
+    id: number;
+    name: string;
+    price: number;
+    stock: number
+};
 
 interface Actions {
   getProducts: () => Promise<Product[]>;
   deleteProduct: (id: number) => Promise<void>;
 }
-
 interface Props {
   actions: Actions;
 }
@@ -18,8 +23,9 @@ export default function ProductsTable({actions}: Props) {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const products = await actions.getProducts();
-        setProducts(products);
+        const res = await actions.getProducts();
+        setProducts(res ?? []);
+        
       } catch (err) {
         console.error("Failed to fetch products", err);
       }

@@ -3,6 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { handleLogin, handleRegister } from "./actions";
+
+import { ApiResponse } from "../types/api";
 
 
 export default function LoginForm() {
@@ -15,16 +18,12 @@ export default function LoginForm() {
   const onSubmitLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        body: JSON.stringify({ login: username, password }),
-        headers: { "Content-Type": "application/json" },
-      });
+      const res: ApiResponse = await handleLogin(username, password);
 
-      if (res.ok) {
+      if (res.success) {
         setAuthenticated(true);
         router.push("/home"); // redirect after login
-      } else setError("Invalid username or password");
+      } else setError(res.error ?? "unknown error");
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unknown error occurred");
     }
@@ -33,14 +32,10 @@ export default function LoginForm() {
 
   const onSubmitRegister = async () => {
     try {
-      const res = await fetch("/api/auth/register", {
-        method: "POST",
-        body: JSON.stringify({ login: username, password, role: "USER" }),
-        headers: { "Content-Type": "application/json" },
-      });
-
-      if (res.ok) alert("Registration successful! Please login.");
-      else setError("Error on reg");
+      const res: ApiResponse = await handleRegister(username, password);
+      if (res.success) 
+        alert("Registration successful! Please login.");
+      else setError(res.error ?? "unknown error");
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unknown error occurred");
     }
@@ -60,6 +55,7 @@ export default function LoginForm() {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              placeholder="E-mail ou Username"
               className="border border-gray-300 h-[40px] text-white rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </label>
@@ -69,6 +65,7 @@ export default function LoginForm() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="Palavra-passe"
               className="border border-gray-300 h-[40px] text-white rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </label>

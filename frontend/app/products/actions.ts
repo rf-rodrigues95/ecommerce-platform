@@ -1,4 +1,7 @@
-"use client";
+"use server";
+
+import { cookies } from "next/headers";
+import { serverFetch } from "../lib/api";
 
 export type Product = {
     id: number;
@@ -7,22 +10,26 @@ export type Product = {
     stock: number
 };
 
-const baseUrl = process.env.FRONTEND_URL;
-
 export async function getProducts(): Promise<Product[]> {
+    const token = (await cookies()).get("token")?.value;
+    const res = await serverFetch<Product[]>("product", "GET", undefined, token);
     
-    const res = await fetch(`api/product`, {method: "GET"});
-    if (!res.ok) 
-        throw new Error("Failed to fetch products");
+    if (res.success && res.data) {
+        return res.data;
+    }
 
-    const products = await res.json();
-    return products;
+    return [];
 }
 
 export async function deleteProduct(id: number): Promise<void> {
-    const res = await fetch(`${baseUrl}/api/product/${id}`, {method: "DELETE"});
+    const token = (await cookies()).get("token")?.value;
+    const res = await serverFetch(`product/${id}`, "DELETE", undefined, token);
+
+    if (!res.success) {
+        throw new Error(res.error || "Error deleting product");
+    }
+/* 
+    const res = await fetch(`/api/product/${id}`, {method: "DELETE"});
     if(!res.ok)
-        throw new Error("Error deleting product");
-
-
+        throw new Error("Error deleting product"); */
 }

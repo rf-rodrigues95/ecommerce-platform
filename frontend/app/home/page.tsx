@@ -1,12 +1,7 @@
 import Image from "next/image";
 import styles from "./page.module.css";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 export default async function Home() {
-  /* const token = (await cookies()).get("token")?.value;
-  if (!token) redirect("/login"); */
-
   return (
     <div className={styles.page}>
       <main className={styles.main}>
