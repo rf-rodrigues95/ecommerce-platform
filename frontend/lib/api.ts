@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { ApiResponse } from "../types/api";
+import { ApiResponse } from "./types";
 
 type Method = "GET" | "POST" | "PUT" | "DELETE";
 

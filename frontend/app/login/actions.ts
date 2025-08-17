@@ -1,6 +1,6 @@
 "use server";
 
-import { loginUser, registerUser } from "../lib/api";
+import { loginUser, registerUser } from "../../lib/api";
 
 export async function handleLogin(username: string, password: string) {
   return loginUser(username, password);

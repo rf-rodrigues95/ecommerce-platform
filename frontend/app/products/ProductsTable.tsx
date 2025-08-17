@@ -1,13 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-export type Product = {
-    id: number;
-    name: string;
-    price: number;
-    stock: number
-};
+import { Product } from "../../lib/types";
 
 interface Actions {
   getProducts: () => Promise<Product[]>;

@@ -4,3 +4,10 @@ export type ApiResponse<T = unknown> = {
   data?: T;
   error?: string;
 };
+
+export type Product = {
+    id: number;
+    name: string;
+    price: number;
+    stock: number
+};

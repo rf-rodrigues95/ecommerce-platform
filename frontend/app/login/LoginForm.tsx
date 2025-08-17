@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { handleLogin, handleRegister } from "./actions";
 
-import { ApiResponse } from "../types/api";
+import { ApiResponse } from "../../lib/types";
 
 
 export default function LoginForm() {

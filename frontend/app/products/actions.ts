@@ -1,14 +1,8 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { serverFetch } from "../lib/api";
-
-export type Product = {
-    id: number;
-    name: string;
-    price: number;
-    stock: number
-};
+import { serverFetch } from "../../lib/api";
+import { Product } from "../../lib/types";
 
 export async function getProducts(): Promise<Product[]> {
     const token = (await cookies()).get("token")?.value;
@@ -28,8 +22,4 @@ export async function deleteProduct(id: number): Promise<void> {
     if (!res.success) {
         throw new Error(res.error || "Error deleting product");
     }
-/* 
-    const res = await fetch(`/api/product/${id}`, {method: "DELETE"});
-    if(!res.ok)
-        throw new Error("Error deleting product"); */
 }
