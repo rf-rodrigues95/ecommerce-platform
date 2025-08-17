@@ -33,7 +33,7 @@
 ---
 
 ### 🔹 Database
-- **PostgreSQL (primary relational DB):**
+- **PostgreSQL (primary relational DB)**
 - **Migrations:** Flyway (ensures schema versioning & repeatable migrations)   
 - **Entity Mapping:** Hibernate via Spring Data JPA   
 - **Connection Pooling:** HikariCP (Spring Boot default) 
