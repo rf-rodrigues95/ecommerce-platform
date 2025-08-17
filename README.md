@@ -46,14 +46,9 @@
 
 ---
 
-### 🔹 Messaging / Eventing
-- **Apache Kafka**
-
----
-
 ### 🔹 Development Environment
 - **Visual Studio Code (VS Code)**
-- **Postman** or **REST Client** (for API testing)
+- **Postman** or **Insomnia** (for API testing)
 - **DBeaver** (for database GUI)
 
 ---
