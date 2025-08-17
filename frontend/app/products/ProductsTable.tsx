@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Product } from "../../lib/types";
+import { Product, UserRole } from "../../lib/types";
+import { Button } from "../../components/ui/button"
+import { useAuth } from "@/context/AuthContext";
 
 interface Actions {
   getProducts: () => Promise<Product[]>;
@@ -13,6 +15,8 @@ interface Props {
 
 export default function ProductsTable({actions}: Props) {
   const [products, setProducts] = useState<Product[]>([]);
+  const { user } = useAuth();
+  console.log(user);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -75,20 +79,23 @@ export default function ProductsTable({actions}: Props) {
               <td className="px-6 py-4">{p.stock}</td>
               <td className="px-6 py-4">
                 <div className="flex gap-4 justify-center">
-                    {/* <a href="#" className="font-medium text-red-400 dark:text-red-500 hover:underline">Delete</a> */}
-                    <button
-                      onClick={() => handleDelete(p.id)}
-                      className="px-2 py-1 text-sm rounded-md border border-gray-300 hover:bg-gray-100 text-red-300 cursor-pointer">
-                      Delete
-                    </button>
-                    <button
-                      className="px-2 py-1 text-sm rounded-md border border-gray-300 hover:bg-gray-100 text-blue-300 cursor-pointer">
-                        Edit
-                    </button>
-                    <button 
-                      className="px-2 py-1 text-sm rounded-md border border-gray-300 hover:bg-gray-100 text-green-300 cursor-pointer">
+                  {user?.role === UserRole.ADMIN && (
+                      <>
+                        <Button
+                          onClick={() => handleDelete(p.id)}
+                          className="px-2 py-1 text-sm rounded-md border border-gray-300 hover:bg-gray-100 text-white cursor-pointer">
+                          Delete
+                        </Button>
+                        <Button
+                          className="px-2 py-1 text-sm rounded-md border border-gray-300 hover:bg-gray-100 text-white cursor-pointer">
+                            Edit
+                        </Button>
+                      </>
+                    )}
+                    <Button 
+                      className="px-2 py-1 text-sm rounded-md border border-gray-300 hover:bg-gray-100 text-white cursor-pointer">
                         Add to Cart
-                    </button>
+                    </Button>
                 </div>
               </td>
             </tr>

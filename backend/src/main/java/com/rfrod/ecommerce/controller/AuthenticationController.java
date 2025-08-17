@@ -15,6 +15,7 @@ import com.rfrod.ecommerce.domain.user.AuthenticationDTO;
 import com.rfrod.ecommerce.domain.user.LoginResponseDTO;
 import com.rfrod.ecommerce.domain.user.RegisterDTO;
 import com.rfrod.ecommerce.domain.user.User;
+import com.rfrod.ecommerce.domain.user.UserDTO;
 import com.rfrod.ecommerce.repositories.UserRepository;
 
 import jakarta.validation.Valid;
@@ -35,9 +36,11 @@ public class AuthenticationController {
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationDTO data) {
         var usernamePw = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePw);
-        var token = tokenService.generateToken((User) auth.getPrincipal());
+        User user = (User) auth.getPrincipal();
+        var token = tokenService.generateToken(user);
 
-        return ResponseEntity.ok(new LoginResponseDTO(token));
+        return ResponseEntity.ok(new LoginResponseDTO(token ,
+            new UserDTO(user.getId(), user.getLogin(), user.getRole().getRole())));
     }
 
     @PostMapping("/register")

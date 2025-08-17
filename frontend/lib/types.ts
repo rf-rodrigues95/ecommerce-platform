@@ -5,9 +5,20 @@ export type ApiResponse<T = unknown> = {
   error?: string;
 };
 
+export enum UserRole {
+  ADMIN = "admin",
+  USER = "user",
+}
+
 export type Product = {
-    id: number;
-    name: string;
-    price: number;
-    stock: number
+  id: number;
+  name: string;
+  price: number;
+  stock: number
 };
+
+export type User = {
+  id: number;
+  username: string;
+  role: UserRole
+}

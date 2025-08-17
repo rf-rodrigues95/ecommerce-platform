@@ -73,5 +73,5 @@ export async function loginUser<T>(username: string, password: string) : Promise
           maxAge: 2 * 60 * 60
     });
 
-  return { success: true, status: res.status};
+  return { success: true, status: res.status, data: data.user};
 }

@@ -1,15 +1,19 @@
 "use client";
+import { User } from "@/lib/types";
 import { createContext, useState, useEffect, useContext, ReactNode } from "react";
 
 interface AuthContextType {
   authenticated: boolean;
   setAuthenticated: (value: boolean) => void;
+  user?: User;
+  setUser: (user: User) => void; 
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [authenticated, setAuthenticated] = useState(false);
+  const [user, setUser] = useState<User | undefined>(undefined);
 
   useEffect(() => {
     async function checkAuth() {
@@ -29,7 +33,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ authenticated, setAuthenticated }}>
+    <AuthContext.Provider value={{ authenticated, setAuthenticated, user, setUser }}>
       {children}
     </AuthContext.Provider>
   );

@@ -5,11 +5,9 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { handleLogin, handleRegister } from "./actions";
 
-import { ApiResponse } from "../../lib/types";
-
 
 export default function LoginForm() {
-  const { setAuthenticated } = useAuth();
+  const { setAuthenticated, setUser } = useAuth();
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -18,10 +16,11 @@ export default function LoginForm() {
   const onSubmitLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res: ApiResponse = await handleLogin(username, password);
+      const res = await handleLogin(username, password);
 
-      if (res.success) {
+      if (res.success && res.data) {
         setAuthenticated(true);
+        setUser(res.data);
         router.push("/home"); // redirect after login
       } else setError(res.error ?? "unknown error");
     } catch (err) {
@@ -32,7 +31,7 @@ export default function LoginForm() {
 
   const onSubmitRegister = async () => {
     try {
-      const res: ApiResponse = await handleRegister(username, password);
+      const res = await handleRegister(username, password);
       if (res.success) 
         alert("Registration successful! Please login.");
       else setError(res.error ?? "unknown error");
