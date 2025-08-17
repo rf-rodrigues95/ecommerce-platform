@@ -14,7 +14,7 @@
 - **Framework & Library:** Next.js 14 + React  
 - **Language:** TypeScript  
 - **Styling:** Tailwind CSS  
-- **Auth Handling:** JWT stored in HttpOnly cookies; use AuthContext for managing authentication state in React  
+- **Auth Handling:** token stored in HttpOnly cookies; AuthContext for managing authentication state in React  
 
 ---
 
