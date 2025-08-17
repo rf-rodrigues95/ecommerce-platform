@@ -3,10 +3,8 @@ package com.rfrod.ecommerce.repositories;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import com.rfrod.ecommerce.domain.user.User;
 
 public interface UserRepository extends JpaRepository<User, UUID>{
-    UserDetails findByLogin(String login);
+    User findByLogin(String login);
 }
