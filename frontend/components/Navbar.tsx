@@ -14,8 +14,8 @@ export default function Navbar() {
     await fetch("auth/logout", { 
       method: "POST",
      });
-    router.push("/login");
     setAuthenticated(false);
+    router.push("/login");
   }
 
   return (
