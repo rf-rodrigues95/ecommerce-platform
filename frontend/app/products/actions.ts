@@ -23,3 +23,13 @@ export async function deleteProduct(id: number): Promise<void> {
         throw new Error(res.error || "Error deleting product");
     }
 }
+
+export async function addToCart(id: number, quantity: number): Promise<void> {
+    const token = (await cookies()).get("token")?.value;
+    
+    const res = await serverFetch("cart/items", "POST", {productId: id, quantity: quantity}, token);
+
+    if (!res.success) {
+        throw new Error(res.error || "Error while adding item");
+    }
+}

@@ -15,19 +15,18 @@ import com.rfrod.ecommerce.domain.cartItem.CartRequestDTO;
 import com.rfrod.ecommerce.domain.cartItem.CartResponseDTO;
 import com.rfrod.ecommerce.domain.user.User;
 import com.rfrod.ecommerce.service.ShoppingCartService;
-
 @RestController
 @RequestMapping("cart")
 public class ShoppingCartController {
 
-    @Autowired
+    @Autowired  
     private ShoppingCartService cartService;
 
     public ShoppingCartController(ShoppingCartService cartService) {
         this.cartService = cartService;
     }
     
-    @PostMapping("/add")
+    @PostMapping("/items")
     public ResponseEntity<CartResponseDTO> addToCart(@RequestBody CartRequestDTO request, @AuthenticationPrincipal User user) {
         var res = this.cartService.addCartItem(user.getId(), request.productId(), request.quantity());
         return toResponseEntity(errorOrValue(res, CartResponseDTO::new));
