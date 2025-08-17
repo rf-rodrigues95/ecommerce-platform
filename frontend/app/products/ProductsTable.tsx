@@ -79,23 +79,27 @@ export default function ProductsTable({actions}: Props) {
               <td className="px-6 py-4">{p.stock}</td>
               <td className="px-6 py-4">
                 <div className="flex gap-4 justify-center">
-                  {user?.role === UserRole.ADMIN && (
+                  {user?.role === UserRole.ADMIN ? (
                       <>
-                        <Button
-                          onClick={() => handleDelete(p.id)}
-                          className="px-2 py-1 text-sm rounded-md border border-gray-300 hover:bg-gray-100 text-white cursor-pointer">
-                          Delete
+                        <Button onClick={() => handleDelete(p.id)}
+                          className="px-2 py-1 text-sm rounded-md border border-gray-300 hover:bg-red-400 text-white cursor-pointer">
+                            Delete
                         </Button>
-                        <Button
-                          className="px-2 py-1 text-sm rounded-md border border-gray-300 hover:bg-gray-100 text-white cursor-pointer">
+                        <Button className="px-2 py-1 text-sm rounded-md border border-gray-300 hover:bg-blue-400 text-white cursor-pointer">
                             Edit
                         </Button>
+                        <Button className="px-2 py-1 text-sm rounded-md border border-gray-300 hover:bg-green-400 text-white cursor-pointer">
+                            Add to Cart
+                        </Button>
+
                       </>
+                    ) : (
+                      <div className="flex justify-center">
+                        <Button className="px-4 py-2 w-[260px] text-sm rounded-md border border-gray-300 hover:bg-green-400 text-white cursor-pointer">
+                          Add to Cart
+                        </Button>
+                      </div>
                     )}
-                    <Button 
-                      className="px-2 py-1 text-sm rounded-md border border-gray-300 hover:bg-gray-100 text-white cursor-pointer">
-                        Add to Cart
-                    </Button>
                 </div>
               </td>
             </tr>
