@@ -94,7 +94,9 @@ public class ProductsService {
 
     private void updateEntity(Product product, ProductRequestDTO data) {
         product.setName(data.name());
+        product.setDescription(data.description());
         product.setPrice(data.price());
         product.setStock(data.stock());
+        product.setProductType(data.type());
     }
 }

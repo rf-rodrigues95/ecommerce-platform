@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -24,7 +26,11 @@ public class Product {
     private UUID id;
 
     private String name;
-
+    private String description;
+    
     private BigDecimal price;
     private Integer stock;
+
+    @Enumerated(EnumType.STRING)
+    private ProductType productType;
 }

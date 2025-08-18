@@ -25,7 +25,7 @@ export default function Navbar() {
         <div className="flex items-center gap-4">
           <Link href="/" className="text-black font-medium hover:text-blue-600 transition-colors cursor-pointer">Home</Link>
           <Link href="/products" className="text-black hover:text-blue-600 transition-colors cursor-pointer">Products</Link>
-          <Link href="/cart" className="text-black hover:text-blue-600 transition-colors cursor-pointer">Cart</Link>
+          <Link href="/carts" className="text-black hover:text-blue-600 transition-colors cursor-pointer">Cart</Link>
           <Link href="/orders" className="text-black hover:text-blue-600 transition-colors cursor-pointer">Orders</Link>
         </div>
 
