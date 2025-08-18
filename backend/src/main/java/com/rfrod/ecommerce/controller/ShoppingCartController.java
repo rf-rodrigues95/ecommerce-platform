@@ -3,9 +3,12 @@ package com.rfrod.ecommerce.controller;
 import static com.rfrod.ecommerce.utils.Result.errorOrValue;
 import static com.rfrod.ecommerce.utils.Result.toResponseEntity;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,4 +35,10 @@ public class ShoppingCartController {
         return toResponseEntity(errorOrValue(res, CartResponseDTO::new));
     }
 
+    @GetMapping("/items")
+    public ResponseEntity<List<CartResponseDTO>> getItems(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(this.cartService.getCartItems(user.getId())
+            .stream()
+            .map(CartResponseDTO::new).toList());
+    }
 }

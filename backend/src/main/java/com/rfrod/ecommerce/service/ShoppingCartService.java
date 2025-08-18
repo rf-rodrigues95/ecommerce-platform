@@ -1,5 +1,6 @@
 package com.rfrod.ecommerce.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -58,5 +59,14 @@ public class ShoppingCartService {
                 : quantity);
 
         return Result.ok(itemRepository.save(cartItem));
+    }
+
+    public List<CartItem> getCartItems(UUID userId) {
+        if (userId == null)
+            throw new RuntimeException("User not found");
+
+        return cartRepository.findByUserIdAndActiveTrue(userId)
+            .map(cart -> itemRepository.findByShoppingCartId(cart.getId()))
+            .orElse(List.of());
     }
 }
