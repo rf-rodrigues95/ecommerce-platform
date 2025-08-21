@@ -3,12 +3,12 @@ package com.rfrod.ecommerce.domain.product;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 public enum ProductType {
-    IMAC("imac"),
-    PS5("ps5"),
-    APPLE_WATCH("applewatch"),
-    IPAD("ipad"),
-    MACBOOK_PRO("macbookpro"),
-    IPHONE("iphone");
+    IMAC("Apple iMac"),
+    PS5("Playstation 5"),
+    APPLE_WATCH("Apple Watch"),
+    IPAD("Apple iPad"),
+    MACBOOK_PRO("Apple - Mac Book Pro"),
+    IPHONE("Apple iPhone");
 
     private String type;
 
